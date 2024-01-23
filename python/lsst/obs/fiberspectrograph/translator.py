@@ -23,10 +23,10 @@ class FiberSpectrographTranslator(LsstBaseTranslator):
     supported_instrument = "FiberSpec"
     """Supports the Rubin calibration fibre spectrographs."""
 
-    default_search_path = os.path.join(getPackageDir("obs_fiberSpectrograph"), "corrections")
+    default_search_path = os.path.join(getPackageDir("obs_fiberspectrograph"), "corrections")
     """Default search path to use to locate header correction files."""
 
-    default_resource_root = os.path.join(getPackageDir("obs_fiberSpectrograph"), "corrections")
+    default_resource_root = os.path.join(getPackageDir("obs_fiberspectrograph"), "corrections")
     """Default resource path root to use to locate header correction files."""
 
     DETECTOR_MAX = 1

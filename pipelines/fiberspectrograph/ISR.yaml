@@ -1,0 +1,24 @@
+description: ISR for Rubin fiber spectrographs
+instrument: lsst.obs.fiberspectrograph.FiberSpectrograph
+
+tasks:
+  isr:
+    class: lsst.obs.fiberspectrograph.isrTask.IsrTask
+    config:
+      doBias: false
+      doCrosstalk: false
+      doVariance: false
+      doLinearize: false
+      doDefect: false
+      doDark: false
+      doFlat: false
+      doFringe: false
+      doAssembleCcd: false
+      doNanMasking: false
+      doSaturation: true
+      doWidenSaturationTrails: false
+      doCameraSpecificMasking: false
+      doSetBadRegions: false
+      doInterpolate: false
+      doMeasureBackground: false
+      doStandardStatistics: false

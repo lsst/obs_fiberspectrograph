@@ -1,8 +1,8 @@
 setupRequired(obs_base)
 setupRequired(obs_lsst)
 setupRequired(astro_metadata_translator)
-
-setupOptional(daf_butler)
+setupRequired(daf_butler)
+setupRequired(ip_isr)
 
 envPrepend(LD_LIBRARY_PATH, ${PRODUCT_DIR}/lib)
 envPrepend(DYLD_LIBRARY_PATH, ${PRODUCT_DIR}/lib)

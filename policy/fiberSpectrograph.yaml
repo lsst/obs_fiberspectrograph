@@ -21,7 +21,7 @@
 #
 #
 
-name : "FiberSpectrograph"
+name : "FiberSpec"
 plateScale : 1.0
 
 # Provide transformations *from* the nativeSys *to* the specified system (e.g. FieldAngle)

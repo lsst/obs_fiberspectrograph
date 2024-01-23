@@ -1,4 +1,4 @@
-# This file is part of obs_fiberSpectrograph
+# This file is part of obs_fiberspectrograph
 #
 # Developed for the LSST Data Management System.
 # This product includes software developed by the LSST Project
@@ -30,7 +30,7 @@ from lsst.obs.lsst import LsstCam
 from .filters import FIBER_SPECTROGRAPH_FILTER_DEFINITIONS
 from .translator import FiberSpectrographTranslator
 
-PACKAGE_DIR = getPackageDir("obs_fiberSpectrograph")
+PACKAGE_DIR = getPackageDir("obs_fiberspectrograph")
 
 
 class FiberSpectrograph(LsstCam):

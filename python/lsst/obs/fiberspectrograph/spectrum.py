@@ -85,7 +85,7 @@ class FiberSpectrum:
 
         Returns
         -------
-        spectrum : `~lsst.obs.fiberSpectrograph.FiberSpectrum`
+        spectrum : `~lsst.obs.fiberspectrograph.FiberSpectrum`
             In-memory spectrum.
         """
         md = dict(fitsio.read_header(path))

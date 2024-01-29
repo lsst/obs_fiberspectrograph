@@ -14,7 +14,7 @@ class TestStarTracker(InstrumentTests, lsst.utils.tests.TestCase):
 
         self.data = InstrumentTestData(name="FiberSpec",
                                        nDetectors=1,
-                                       firstDetectorName="0",
+                                       firstDetectorName="ccd0",
                                        physical_filters=physical_filters)
         self.instrument = lsst.obs.fiberspectrograph.FiberSpectrograph()
 

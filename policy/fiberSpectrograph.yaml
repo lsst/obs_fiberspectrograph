@@ -39,7 +39,7 @@ transforms :
 # A list of detectors in the camera; we only have one
 #
 CCDs : &CCDs
-    "0" :
+    "ccd0" :
         detectorType : 0
         id : 0
         serial : "TBD"

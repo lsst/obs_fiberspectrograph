@@ -74,8 +74,8 @@ class FiberSpectrum:
     def getBBox(self):
         return self.detector.getBBox()
 
-    @staticmethod
-    def readFits(path):
+    @classmethod
+    def readFits(cls,path):
         """Read a Spectrum from disk"
 
         Parameters
@@ -94,7 +94,7 @@ class FiberSpectrum:
 
         wavelength = u.Quantity(wavelength, u.Unit(md["CUNIT1"]), copy=False)
 
-        return FiberSpectrum(wavelength, flux, md)
+        return cls(wavelength, flux, md)
 
     def writeFits(self, path):
         """Write a Spectrum to disk

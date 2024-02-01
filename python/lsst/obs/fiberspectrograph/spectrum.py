@@ -23,7 +23,6 @@ __all__ = ("FiberSpectrum",)
 
 import numpy as np
 import astropy.io.fits
-import fitsio
 import astropy.units as u
 from ._instrument import FiberSpectrograph
 import lsst.afw.image as afwImage
@@ -75,7 +74,7 @@ class FiberSpectrum:
         return self.detector.getBBox()
 
     @classmethod
-    def readFits(cls,path):
+    def readFits(cls, path):
         """Read a Spectrum from disk"
 
         Parameters
@@ -88,11 +87,15 @@ class FiberSpectrum:
         spectrum : `~lsst.obs.fiberspectrograph.FiberSpectrum`
             In-memory spectrum.
         """
-        md = dict(fitsio.read_header(path))
-        flux = fitsio.read(path)
-        wavelength = fitsio.read(path, ext=md["PS1_0"], columns=md["PS1_1"]).flatten()
 
-        wavelength = u.Quantity(wavelength, u.Unit(md["CUNIT1"]), copy=False)
+        fitsfile = astropy.io.fits.open(path)
+        md = dict(fitsfile[0].header)
+
+        if md["FORMAT_V"] >= 1:
+            flux = fitsfile[0].data
+            wavelength = fitsfile[md["PS1_0"]].data[md["PS1_1"]].flatten()
+
+            wavelength = u.Quantity(wavelength, u.Unit(md["CUNIT1"]), copy=False)
 
         return cls(wavelength, flux, md)
 

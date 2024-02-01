@@ -42,7 +42,7 @@ CCDs : &CCDs
     "ccd0" :
         detectorType : 0
         id : 0
-        serial : "TBD"
+        serial : "1606191U1"
         offset : [0, 0]
         refpos : [0, 0]
         #

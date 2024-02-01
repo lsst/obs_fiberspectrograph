@@ -12,6 +12,7 @@ class FiberSpectrographRawFormatter(Formatter):
     translatorClass = FiberSpectrographTranslator
     fiberSpectrumClass = FiberSpectrum
     filterDefinitions = FIBER_SPECTROGRAPH_FILTER_DEFINITIONS
+    extension = ".fits"
 
     def getDetector(self, id):
         return self.cameraClass().getCamera()[id]

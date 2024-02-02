@@ -149,8 +149,7 @@ class DataManager:
         hdr = astropy.io.fits.Header()
 
         hdr["FORMAT_V"] = self.FORMAT_VERSION
-        for k, v in self.spectrum.md.items():
-            hdr[k] = v
+        hdr.update(self.spectrum.md)
 
         # WCS headers - Use -TAB WCS definition
         wcs_cards = [

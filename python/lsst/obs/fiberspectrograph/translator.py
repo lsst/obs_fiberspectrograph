@@ -108,9 +108,9 @@ class FiberSpectrographTranslator(LsstBaseTranslator):
         counter : `int`
             The sequence number for this day.
         """
-        if self.is_key_ok("OBSID"):
-            self._used_these_cards("OBSID")
-            return int(self._header["OBSID"])
+        if self.is_key_ok("SEQNUM"):
+            self._used_these_cards("SEQNUM")
+            return int(self._header["SEQNUM"])
 
         # This indicates a problem so we warn and return a 0
         log.warning("%s: Unable to determine the observation counter so returning 0",
@@ -190,7 +190,7 @@ class FiberSpectrographTranslator(LsstBaseTranslator):
     def to_visit_id(self):
         """Calculate the visit associated with this exposure.
         """
-        return self.exposure_id
+        return self.to_exposure_id()
 
     @cache_translation
     def to_exposure_id(self):

@@ -34,10 +34,9 @@ class FiberSpectrographTranslator(LsstBaseTranslator):
     _const_map = {
         "detector_num": 0,
         "detector_name": "0",
-        "exposure_group": None,
         "object": None,
         "physical_filter": "empty",
-        "detector_serial": "0xdeadbeef",
+        "detector_serial": "1606191U1",
         "detector_group": "None",
         "relative_humidity": None,
         "pressure": None,
@@ -191,7 +190,7 @@ class FiberSpectrographTranslator(LsstBaseTranslator):
     def to_visit_id(self):
         """Calculate the visit associated with this exposure.
         """
-        return None
+        return self.exposure_id
 
     @cache_translation
     def to_exposure_id(self):
@@ -204,9 +203,6 @@ class FiberSpectrographTranslator(LsstBaseTranslator):
         exposure_id : `int`
             Unique exposure number.
         """
-        if "CALIB_ID" in self._header:
-            self._used_these_cards("CALIB_ID")
-            return None
 
         dayobs = self.to_observing_day()
         seqnum = self.to_observation_counter()

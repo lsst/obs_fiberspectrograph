@@ -50,7 +50,7 @@ class FiberSpectrograph(LsstCam):
     translatorClass = FiberSpectrographTranslator
     visitSystem = VisitSystem.BY_SEQ_START_END
     raw_definition = ("rawSpectrum",
-                      ("instrument", "physical_filter", "exposure", "detector"),
+                      ("instrument", "exposure", "detector"),
                       "FiberSpectrum")
 
     @classmethod

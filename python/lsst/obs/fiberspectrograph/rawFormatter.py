@@ -22,7 +22,7 @@ class FiberSpectrographRawFormatter(Formatter):
 
         Returns
         -------
-        image : `~lsst.obs.fiberspectrograph.FiberSpectrum`
+        FiberSpectrum: `~lsst.obs.fiberspectrograph.FiberSpectrum`
             In-memory spectrum.
         """
         path = self.fileDescriptor.location.path

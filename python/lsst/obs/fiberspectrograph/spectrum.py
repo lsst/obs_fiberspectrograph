@@ -45,6 +45,18 @@ class Info:
 
 
 class FiberSpectrum:
+    """Define a spectrum from a fiber spectrograph
+
+    Parameters
+    ----------
+    wavelength : `numpy.ndarray`
+        Spectrum wavelength in units provided by the spectrum file.
+    flux: `numpy.ndarray`
+        Spectrum flux.
+    md: `dict`
+        Dictionary of the spectrum headers.
+    """
+
     def __init__(self, wavelength, flux, md=None):
         self.wavelength = wavelength
         self.flux = flux

@@ -87,37 +87,6 @@ class FiberSpectrographTranslator(LsstBaseTranslator):
         return Time(self._header["DATE-BEG"], scale="tai", format="isot")
 
     @cache_translation
-    def to_observing_day(self):
-        """Return the day of observation as YYYYMMDD integer.
-
-        Returns
-        -------
-        obs_day : `int`
-            The day of observation.
-        """
-        date = self.to_datetime_begin()
-        date -= self._ROLLOVER_TIME
-        return int(date.strftime("%Y%m%d"))
-
-    @cache_translation
-    def to_observation_counter(self):
-        """Return the sequence number within the observing day.
-
-        Returns
-        -------
-        counter : `int`
-            The sequence number for this day.
-        """
-        if self.is_key_ok("SEQNUM"):
-            self._used_these_cards("SEQNUM")
-            return int(self._header["SEQNUM"])
-
-        # This indicates a problem so we warn and return a 0
-        log.warning("%s: Unable to determine the observation counter so returning 0",
-                    self._log_prefix)
-        return 0
-
-    @cache_translation
     def to_exposure_time(self):
         # Docstring will be inherited. Property defined in properties.py
         # Some data is missing a value for EXPTIME.
@@ -191,20 +160,3 @@ class FiberSpectrographTranslator(LsstBaseTranslator):
         """Calculate the visit associated with this exposure.
         """
         return self.to_exposure_id()
-
-    @cache_translation
-    def to_exposure_id(self):
-        """Generate a unique exposure ID number
-
-        This is a combination of DAYOBS and SEQNUM
-
-        Returns
-        -------
-        exposure_id : `int`
-            Unique exposure number.
-        """
-
-        dayobs = self.to_observing_day()
-        seqnum = self.to_observation_counter()
-
-        return self.compute_exposure_id(dayobs, seqnum)

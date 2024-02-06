@@ -74,4 +74,5 @@ class FiberSpectrograph(LsstCam):
             instrument=self.getName(),
             id=camGeomDetector.getId(),
             full_name=camGeomDetector.getName(),
+            purpose=str(camGeomDetector.getType()).split(".")[-1]
         )

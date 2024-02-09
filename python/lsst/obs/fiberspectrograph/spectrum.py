@@ -25,6 +25,7 @@ import numpy as np
 import astropy.io.fits
 import astropy.units as u
 from ._instrument import FiberSpectrograph
+from .data_manager import DataManager
 import lsst.afw.image as afwImage
 
 
@@ -55,15 +56,16 @@ class FiberSpectrum:
         Spectrum flux.
     md: `dict`
         Dictionary of the spectrum headers.
+    detectorId : `int`
+        Optional Detector ID for this data.
     """
 
-    def __init__(self, wavelength, flux, md=None):
+    def __init__(self, wavelength, flux, md=None, detectorId=0):
         self.wavelength = wavelength
         self.flux = flux
         self.md = md
 
-        self.info = Info(md)
-        self.detector = FiberSpectrograph().getCamera()[0]
+        self.detector = FiberSpectrograph().getCamera()[detectorId]
 
         self.__Mask = afwImage.MaskX(1, 1)
         self.getPlaneBitMask = self.__Mask.getPlaneBitMask  # ughh, awful Mask API
@@ -122,91 +124,3 @@ class FiberSpectrum:
         hdl = DataManager(self).make_hdulist()
 
         hdl.writeto(path)
-
-
-class DataManager:
-    """A data packager for `Spectrum` objects
-    """
-
-    wcs_table_name = "WCS-TAB"
-    """Name of the table containing the wavelength WCS (EXTNAME)."""
-    wcs_table_ver = 1
-    """WCS table version (EXTVER)."""
-    wcs_column_name = "wavelength"
-    """Name of the table column containing the wavelength information."""
-
-    # The version of the FITS file format produced by this class.
-    FORMAT_VERSION = 1
-
-    def __init__(self, spectrum):
-        self.spectrum = spectrum
-
-    def make_hdulist(self):
-        """Generate a FITS hdulist built from SpectrographData.
-        Parameters
-        ----------
-        spec : `SpectrographData`
-            The data from which to build the FITS hdulist.
-        Returns
-        -------
-        hdulist : `astropy.io.fits.HDUList`
-            The FITS hdulist.
-        """
-        hdu1 = self.make_primary_hdu()
-        hdu2 = self.make_wavelength_hdu()
-        return astropy.io.fits.HDUList([hdu1, hdu2])
-
-    def make_fits_header(self):
-        """Return a FITS header built from a Spectrum"""
-        hdr = astropy.io.fits.Header()
-
-        hdr["FORMAT_V"] = self.FORMAT_VERSION
-        hdr.update(self.spectrum.md)
-
-        # WCS headers - Use -TAB WCS definition
-        wcs_cards = [
-            "WCSAXES =                    1 / Number of WCS axes",
-            "CRPIX1  =                  0.0 / Reference pixel on axis 1",
-            "CRVAL1  =                  0.0 / Value at ref. pixel on axis 1",
-            "CNAME1  = 'Wavelength'         / Axis name for labeling purposes",
-            "CTYPE1  = 'WAVE-TAB'           / Wavelength axis by lookup table",
-            "CDELT1  =                  1.0 / Pixel size on axis 1",
-            f"CUNIT1  = '{self.spectrum.wavelength.unit.name:8s}'           / Units for axis 1",
-            f"PV1_1   = {self.wcs_table_ver:20d} / EXTVER  of bintable extension for -TAB arrays",
-            f"PS1_0   = '{self.wcs_table_name:8s}'           / EXTNAME of bintable extension for -TAB arrays",
-            f"PS1_1   = '{self.wcs_column_name:8s}'         / Wavelength coordinate array",
-        ]
-        for c in wcs_cards:
-            hdr.append(astropy.io.fits.Card.fromstring(c))
-
-        return hdr
-
-    def make_primary_hdu(self):
-        """Return the primary HDU built from a Spectrum."""
-
-        hdu = astropy.io.fits.PrimaryHDU(
-            data=self.spectrum.flux, header=self.make_fits_header()
-        )
-        return hdu
-
-    def make_wavelength_hdu(self):
-        """Return the wavelength HDU built from a Spectrum."""
-
-        # The wavelength array must be 2D (N, 1) in numpy but (1, N) in FITS
-        wavelength = self.spectrum.wavelength.reshape([self.spectrum.wavelength.size, 1])
-
-        # Create a Table. It will be a single element table
-        table = astropy.table.Table()
-
-        # Create the wavelength column
-        # Create the column explicitly since it is easier to ensure the
-        # shape this way.
-        wavecol = astropy.table.Column([wavelength], unit=wavelength.unit.name)
-
-        # The column name must match the PS1_1 entry from the primary HDU
-        table[self.wcs_column_name] = wavecol
-
-        # The name MUST match the value of PS1_0 and the version MUST
-        # match the value of PV1_1
-        hdu = astropy.io.fits.BinTableHDU(table, name=self.wcs_table_name, ver=1)
-        return hdu

@@ -27,22 +27,7 @@ import astropy.units as u
 from ._instrument import FiberSpectrograph
 from .data_manager import DataManager
 import lsst.afw.image as afwImage
-
-
-class VisitInfo:
-    def __init__(self, md):
-        self.exposureTime = md["EXPTIME"]
-
-    def getExposureTime(self):
-        return self.exposureTime
-
-
-class Info:
-    def __init__(self, md):
-        self.visitInfo = VisitInfo(md)
-
-    def getVisitInfo(self):
-        return self.visitInfo
+from astro_metadata_translator import ObservationInfo
 
 
 class FiberSpectrum:
@@ -65,6 +50,7 @@ class FiberSpectrum:
         self.flux = flux
         self.md = md
 
+        self.info = ObservationInfo(md)
         self.detector = FiberSpectrograph().getCamera()[detectorId]
 
         self.__Mask = afwImage.MaskX(1, 1)

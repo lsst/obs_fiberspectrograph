@@ -59,18 +59,28 @@ class FiberSpectrum:
         self.variance = np.zeros_like(flux)
 
     def getDetector(self):
+        """Get fiber spectrograph detector"
+        """
         return self.detector
 
     def getInfo(self):
+        """Get observation information"
+        """
         return self.info
 
     def getMetadata(self):
+        """Get the spectrum metadata"
+        """
         return self.md
 
     def getFilter(self):
+        """Get filter label"
+        """
         return FiberSpectrograph.filterDefinitions[0].makeFilterLabel()
 
     def getBBox(self):
+        """Get bounding box"
+        """
         return self.detector.getBBox()
 
     @classmethod

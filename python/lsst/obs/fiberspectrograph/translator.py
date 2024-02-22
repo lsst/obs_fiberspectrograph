@@ -21,7 +21,7 @@ class FiberSpectrographTranslator(LsstBaseTranslator):
     """Name of this translation class"""
 
     supported_instrument = "FiberSpec"
-    """Supports the Rubin calibration fibre spectrographs."""
+    """Supports the Rubin calibration fiber spectrographs."""
 
     default_search_path = os.path.join(getPackageDir("obs_fiberspectrograph"), "corrections")
     """Default search path to use to locate header correction files."""

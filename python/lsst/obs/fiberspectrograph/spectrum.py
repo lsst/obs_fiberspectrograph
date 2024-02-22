@@ -48,7 +48,7 @@ class FiberSpectrum:
     def __init__(self, wavelength, flux, md=None, detectorId=0):
         self.wavelength = wavelength
         self.flux = flux
-        self.md = md
+        self.metadata = md
 
         self.info = ObservationInfo(md)
         self.detector = FiberSpectrograph().getCamera()[detectorId]

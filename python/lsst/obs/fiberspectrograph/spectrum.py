@@ -31,7 +31,7 @@ from astro_metadata_translator import ObservationInfo
 
 
 class FiberSpectrum:
-    """Define a spectrum from a fiber spectrograph
+    """Define a spectrum from a fiber spectrograph.
 
     Parameters
     ----------
@@ -59,33 +59,33 @@ class FiberSpectrum:
         self.variance = np.zeros_like(flux)
 
     def getDetector(self):
-        """Get fiber spectrograph detector"
+        """Get fiber spectrograph detector."
         """
         return self.detector
 
     def getInfo(self):
-        """Get observation information"
+        """Get observation information."
         """
         return self.info
 
     def getMetadata(self):
-        """Get the spectrum metadata"
+        """Get the spectrum metadata."
         """
         return self.md
 
     def getFilter(self):
-        """Get filter label"
+        """Get filter label."
         """
         return FiberSpectrograph.filterDefinitions[0].makeFilterLabel()
 
     def getBBox(self):
-        """Get bounding box"
+        """Get bounding box."
         """
         return self.detector.getBBox()
 
     @classmethod
     def readFits(cls, path):
-        """Read a Spectrum from disk"
+        """Read a Spectrum from disk."
 
         Parameters
         ----------
@@ -101,16 +101,18 @@ class FiberSpectrum:
         fitsfile = astropy.io.fits.open(path)
         md = dict(fitsfile[0].header)
 
-        if md["FORMAT_V"] >= 1:
+        if md["FORMAT_V"] == 1:
             flux = fitsfile[0].data
             wavelength = fitsfile[md["PS1_0"]].data[md["PS1_1"]].flatten()
 
             wavelength = u.Quantity(wavelength, u.Unit(md["CUNIT1"]), copy=False)
+        else:
+            raise ValueError(f"FORMAT_V has changed from 1 to {md["FORMAT_V"]}")
 
         return cls(wavelength, flux, md)
 
     def writeFits(self, path):
-        """Write a Spectrum to disk
+        """Write a Spectrum to disk.
 
         Parameters
         ----------

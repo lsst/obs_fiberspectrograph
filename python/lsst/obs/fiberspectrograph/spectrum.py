@@ -53,9 +53,9 @@ class FiberSpectrum:
         self.info = ObservationInfo(md)
         self.detector = FiberSpectrograph().getCamera()[detectorId]
 
-        self.__Mask = afwImage.MaskX(1, 1)
-        self.getPlaneBitMask = self.__Mask.getPlaneBitMask  # ughh, awful Mask API
-        self.mask = np.zeros(flux.shape, dtype=self.__Mask.array.dtype)
+        mask = afwImage.MaskX(1, 1)
+        self.getPlaneBitMask = mask.getPlaneBitMask  # ughh, awful Mask API
+        self.mask = np.zeros(flux.shape, dtype=mask.array.dtype)
         self.variance = np.zeros_like(flux)
 
     def getDetector(self):

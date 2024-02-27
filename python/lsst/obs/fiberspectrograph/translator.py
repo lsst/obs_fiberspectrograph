@@ -32,11 +32,12 @@ class FiberSpectrographTranslator(LsstBaseTranslator):
     DETECTOR_MAX = 1
 
     _const_map = {
+        # TODO: DM-43041 DATE, detector name and controller should be put
+        # in file header and add to mapping
         "detector_num": 0,
-        "detector_name": "0",
+        "detector_name": "ccd0",
         "object": None,
         "physical_filter": "empty",
-        "detector_serial": "1606191U1",
         "detector_group": "None",
         "relative_humidity": None,
         "pressure": None,
@@ -53,6 +54,7 @@ class FiberSpectrographTranslator(LsstBaseTranslator):
     _trivial_map = {
         "observation_id": "OBSID",
         "science_program": ("PROGRAM", dict(default="unknown")),
+        "detector_serial": "SERIAL",
     }
     """One-to-one mappings"""
 
@@ -75,6 +77,7 @@ class FiberSpectrographTranslator(LsstBaseTranslator):
             otherwise.
         """
 
+        # TODO: DM-43041 need to be updated with new fiber spec
         return "INSTRUME" in header and header["INSTRUME"] in ["FiberSpectrograph.Broad"]
 
     @cache_translation

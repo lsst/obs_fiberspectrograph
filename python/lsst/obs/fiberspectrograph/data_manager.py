@@ -53,14 +53,15 @@ class DataManager:
         """
         hdu1 = self.make_primary_hdu()
         hdu2 = self.make_wavelength_hdu()
-        return astropy.io.fits.HDUList([hdu1, hdu2])
+        hdu3, hdu4 = self.make_maskvariance_hdu()
+        return astropy.io.fits.HDUList([hdu1, hdu2, hdu3, hdu4])
 
     def make_fits_header(self):
         """Return a FITS header built from a Spectrum"""
         hdr = astropy.io.fits.Header()
 
         hdr["FORMAT_V"] = self.FORMAT_VERSION
-        hdr.update(self.spectrum.md)
+        hdr.update(self.spectrum.metadata)
 
         # WCS headers - Use -TAB WCS definition
         wcs_cards = [
@@ -87,6 +88,23 @@ class DataManager:
             data=self.spectrum.flux, header=self.make_fits_header()
         )
         return hdu
+
+    def make_maskvariance_hdu(self):
+        """Return the HDU for the mask and variance plane."""
+        hdr_mask = astropy.io.fits.Header()
+        hdr_mask["EXTTYPE"] = 'MASK    '
+        hdr_mask["EXTNAME"] = 'MASK    '
+        hdu_mask = astropy.io.fits.ImageHDU(
+            data=self.spectrum.mask, header=hdr_mask
+        )
+
+        hdr_variance = astropy.io.fits.Header()
+        hdr_variance["EXTTYPE"] = 'VARIANCE'
+        hdr_variance["EXTNAME"] = 'VARIANCE'
+        hdu_variance = astropy.io.fits.ImageHDU(
+            data=self.spectrum.variance, header=hdr_variance
+        )
+        return hdu_mask, hdu_variance
 
     def make_wavelength_hdu(self):
         """Return the wavelength HDU built from a Spectrum."""

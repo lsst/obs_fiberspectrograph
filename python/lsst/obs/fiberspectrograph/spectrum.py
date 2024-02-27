@@ -45,7 +45,7 @@ class FiberSpectrum:
         Optional Detector ID for this data.
     """
 
-    def __init__(self, wavelength, flux, md=None, detectorId=0):
+    def __init__(self, wavelength, flux, md=None, detectorId=0, mask=None, variance=None):
         self.wavelength = wavelength
         self.flux = flux
         self.metadata = md
@@ -53,10 +53,10 @@ class FiberSpectrum:
         self.info = ObservationInfo(md)
         self.detector = FiberSpectrograph().getCamera()[detectorId]
 
-        mask = afwImage.MaskX(1, 1)
-        self.getPlaneBitMask = mask.getPlaneBitMask  # ughh, awful Mask API
-        self.mask = np.zeros(flux.shape, dtype=mask.array.dtype)
-        self.variance = np.zeros_like(flux)
+        mask_temp = afwImage.MaskX(1, 1)
+        self.getPlaneBitMask = mask_temp.getPlaneBitMask  # ughh, awful Mask API
+        self.mask = mask
+        self.variance = variance
 
     def getDetector(self):
         """Get fiber spectrograph detector."
@@ -100,16 +100,24 @@ class FiberSpectrum:
 
         fitsfile = astropy.io.fits.open(path)
         md = dict(fitsfile[0].header)
+        format_v = md["FORMAT_V"]
 
-        if md["FORMAT_V"] == 1:
+        if format_v == 1:
             flux = fitsfile[0].data
             wavelength = fitsfile[md["PS1_0"]].data[md["PS1_1"]].flatten()
 
             wavelength = u.Quantity(wavelength, u.Unit(md["CUNIT1"]), copy=False)
-        else:
-            raise ValueError(f"FORMAT_V has changed from 1 to {md["FORMAT_V"]}")
 
-        return cls(wavelength, flux, md)
+            mask_temp = afwImage.MaskX(1, 1)
+            mask = np.zeros(flux.shape, dtype=mask_temp.array.dtype)
+            variance = np.zeros_like(flux)
+            if len(fitsfile) == 4:
+                mask = fitsfile[2].data
+                variance = fitsfile[3].data
+        else:
+            raise ValueError(f"FORMAT_V has changed from 1 to {format_v}")
+
+        return cls(wavelength, flux, md=md, mask=mask, variance=variance)
 
     def writeFits(self, path):
         """Write a Spectrum to disk.

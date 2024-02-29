@@ -71,7 +71,7 @@ class FiberSpectrum:
     def getMetadata(self):
         """Get the spectrum metadata."
         """
-        return self.md
+        return self.metadata
 
     def getFilter(self):
         """Get filter label."

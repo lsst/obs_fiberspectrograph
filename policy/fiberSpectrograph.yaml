@@ -1,0 +1,84 @@
+# This file is part of obs_fiberspectrograph.
+#
+# Developed for the LSST Data Management System.
+# This product includes software developed by the LSST Project
+# (https://www.lsst.org).
+# See the COPYRIGHT file at the top-level directory of this distribution
+# for details of code ownership.
+#
+# This product includes software developed by the
+# LSST Project (http://www.lsst.org/).
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the LSST License Statement and
+# the GNU General Public License along with this program.  If not,
+# see <http://www.lsstcorp.org/LegalNotices/>.
+#
+#
+
+name : "FiberSpec"
+plateScale : 1.0
+
+# Provide transformations *from* the nativeSys *to* the specified system (e.g. FieldAngle)
+transforms :
+  nativeSys : FocalPlane
+  FieldAngle :
+    transformType : radial
+    coeffs :        [0.0, 1.0, 0.0]     # radial distortion coefficients (c_0 + c_1 r + c_2 r^2 + ...)
+
+#
+# A list of detectors in the camera; we only have one
+#
+CCDs : &CCDs
+    "ccd0" :
+        detectorType : 0
+        id : 0
+        serial : "1606191U1"
+        offset : [0, 0]
+        refpos : [0, 0]
+        #
+        #            [[x0,  y0], [xSize, ySize]]
+        bbox : &bbox [[ 0,   0], [ 2048,     1]] # total bbox of trimmed detector
+        pixelSize : [1, 1]       # in mm
+        transformDict : {nativeSys : 'Pixels', transforms : None}
+        transposeDetector : False
+        pitch : 0.0                     # (degrees)
+        yaw : 0.0                       # rotation in plane of camera (degrees)
+        roll : 0.0                      # (degrees)
+
+        amplifiers:                     # only 1 amplifier
+            "0":
+              hdu : 1                   # Only one HDU in the file
+
+              ixy : [0, 0]
+              readCorner : LL
+              flipXY :     [False, False]
+              perAmpData : False                  # is the amp data split across multiple HDUs/Files?
+
+              #                         [[x0,  y0], [xSize, ySize]]
+              rawBBox                 : *bbox
+              rawDataBBox             : *bbox
+              rawSerialPrescanBBox    : [[0,    0], [0,         0]] # serial prescan
+              rawSerialOverscanBBox   : [[0,    0], [0,         0]] # serial overscan
+              rawParallelPrescanBBox  : [[0,    0], [0,         0]] # pixels digitised before first parallel
+              rawParallelOverscanBBox : [[0,    0], [0,         0]] # parallel overscan
+
+              saturation : 16383        # saturation level, DN XXX Should this be in electrons?
+
+              # Linearity correction is still under discussion, so this is a placeholder.
+              linearityType : PROPORTIONAL
+              linearityThreshold : 0
+              linearityMax : 65535
+              linearityCoeffs : [0, 65535]        # == [linearityThreshold, linearityMax]
+
+              gain : 1.00
+              readNoise : 10

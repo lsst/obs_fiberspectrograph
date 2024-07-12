@@ -108,7 +108,7 @@ class IsrTask(lsst.ip.isr.IsrTask):
         flux = ccdExposure.flux
 
         saturated = flux > amp.getSaturation()
-        flux[saturated] = np.NaN
+        flux[saturated] = np.nan
         ccdExposure.mask[saturated] |= ccdExposure.getPlaneBitMask(self.config.saturatedMaskName)
 
         return False

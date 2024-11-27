@@ -19,4 +19,7 @@ tests/.tests
 pytest_session.txt
 .cache/
 .pytest_cache
-.coverage
+.coverage*
+
+_build.*
+python/*.dist-info/

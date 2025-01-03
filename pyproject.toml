@@ -1,0 +1,5 @@
+[project]
+name = "lsst-obs-fiberspectrograph"
+
+[project.entry-points.astro_metadata_translators]
+obs_lsst = "lsst.obs.fiberspectrograph.translator:_force_load"

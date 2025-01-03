@@ -163,3 +163,10 @@ class FiberSpectrographTranslator(LsstBaseTranslator):
         """Calculate the visit associated with this exposure.
         """
         return self.to_exposure_id()
+
+
+def _force_load():
+    # This function exists solely to be loaded by the
+    # astro_metadata_translators entry point. The function
+    # will not be called.
+    pass

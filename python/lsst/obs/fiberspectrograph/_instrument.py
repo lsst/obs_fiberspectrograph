@@ -53,7 +53,9 @@ class FiberSpectrograph(LsstCam):
     def getCamera(cls):
         # Constructing a YAML camera takes a long time but we rely on
         # yamlCamera to cache for us.
-        cameraYamlFile = ResourcePath(f"eups://obs_fiberspectrograph/policy/{cls.policyName}.yaml")
+        cameraYamlFile = ResourcePath(
+            f"resource://lsst.obs.fiberspectrograph/resources/policy/{cls.policyName}.yaml"
+        )
         with cameraYamlFile.as_local() as local_file:
             return yamlCamera.makeCamera(local_file.ospath)
 

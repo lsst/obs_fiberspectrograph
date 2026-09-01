@@ -4,5 +4,6 @@ setupRequired(astro_metadata_translator)
 setupRequired(daf_butler)
 setupRequired(ip_isr)
 setupRequired(afw)
+setupRequired(resources)
 
 envPrepend(PYTHONPATH, ${PRODUCT_DIR}/python)

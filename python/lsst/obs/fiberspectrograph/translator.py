@@ -20,10 +20,10 @@ class FiberSpectrographTranslator(LsstBaseTranslator):
     supported_instrument = "FiberSpec"
     """Supports the Rubin calibration fiber spectrographs."""
 
-    default_search_path = "eups://obs_fiberspectrograph/corrections/"
+    default_search_path = "resource://lsst.obs.fiberspectrograph/resources/corrections/"
     """Default search path to use to locate header correction files."""
 
-    default_resource_root = "eups://obs_fiberspectrograph/corrections/"
+    default_resource_root = "resource://lsst.obs.fiberspectrograph/resources/corrections/"
     """Default resource path root to use to locate header correction files."""
 
     DETECTOR_MAX = 1

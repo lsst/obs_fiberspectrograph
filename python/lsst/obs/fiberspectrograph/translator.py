@@ -1,13 +1,10 @@
 import logging
-import os
 
 import astropy.units as u
 from astropy.time import Time
 
 from astro_metadata_translator import cache_translation
 from lsst.obs.lsst.translators.lsst import SIMONYI_TELESCOPE, LsstBaseTranslator
-
-from lsst.utils import getPackageDir
 
 __all__ = ["FiberSpectrographTranslator", ]
 
@@ -23,10 +20,10 @@ class FiberSpectrographTranslator(LsstBaseTranslator):
     supported_instrument = "FiberSpec"
     """Supports the Rubin calibration fiber spectrographs."""
 
-    default_search_path = os.path.join(getPackageDir("obs_fiberspectrograph"), "corrections")
+    default_search_path = "resource://lsst.obs.fiberspectrograph/resources/corrections/"
     """Default search path to use to locate header correction files."""
 
-    default_resource_root = os.path.join(getPackageDir("obs_fiberspectrograph"), "corrections")
+    default_resource_root = "resource://lsst.obs.fiberspectrograph/resources/corrections/"
     """Default resource path root to use to locate header correction files."""
 
     DETECTOR_MAX = 1

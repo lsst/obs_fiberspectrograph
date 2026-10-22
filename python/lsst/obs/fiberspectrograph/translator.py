@@ -76,7 +76,7 @@ class FiberSpectrographTranslator(LsstBaseTranslator):
         """
 
         # TODO: DM-43041 need to be updated with new fiber spec
-        return "INSTRUME" in header and header["INSTRUME"] in ["FiberSpectrograph.Broad"]
+        return "INSTRUME" in header and header["INSTRUME"] in ["FiberSpectrograph.Broad", "FiberSpectrograph.Blue", "FiberSpectrograph.Red"]
 
     @cache_translation
     def to_instrument(self):
